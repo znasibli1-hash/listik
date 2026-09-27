@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Design tokens (RGB triplets so Tailwind opacity modifiers work) ---------- */
+:root {
+  --paper: 246 249 247;      /* cool near-white with a hint of green */
+  --surface: 255 255 255;
+  --sunken: 238 243 240;
+  --ink: 17 50 40;           /* deep forest green text */
+  --muted: 88 110 101;
+  --line: 218 228 222;
+  --leaf: 31 138 91;         /* chlorophyll accent = experimental class */
+  --leaf-soft: 222 241 231;
+  --control: 116 132 150;    /* slate = control class */
+  --signal: 184 120 18;      /* amber = CO₂ / data-quality warnings */
+  --signal-soft: 251 241 219;
+  --danger: 190 62 50;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: 12 22 19; --surface: 18 31 27; --sunken: 23 39 34; --ink: 226 238 231;
+    --muted: 150 172 162; --line: 38 58 51; --leaf: 74 196 139; --leaf-soft: 24 58 44;
+    --control: 146 162 181; --signal: 232 170 70; --signal-soft: 58 44 20; --danger: 236 110 96;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: 12 22 19; --surface: 18 31 27; --sunken: 23 39 34; --ink: 226 238 231;
+  --muted: 150 172 162; --line: 38 58 51; --leaf: 74 196 139; --leaf-soft: 24 58 44;
+  --control: 146 162 181; --signal: 232 170 70; --signal-soft: 58 44 20; --danger: 236 110 96;
+  color-scheme: dark;
+}
+
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 80px); -webkit-text-size-adjust: 100%; }
+*, *::before, *::after { box-sizing: inherit; }
+body {
+  margin: 0;
+  background: rgb(var(--paper));
+  color: rgb(var(--ink));
+  font-family: Onest, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'tnum' 0;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg { max-width: 100%; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* faint measurement grid, used behind lab-style panels */
+.lab-grid {
+  background-image:
+    linear-gradient(rgb(var(--line) / .55) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / .55) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+:focus-visible { outline: 2px solid rgb(var(--leaf)); outline-offset: 2px; border-radius: 6px; }
+
+@layer components {
+  .field {
+    @apply w-full rounded-[10px] border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted/70 transition-colors;
+  }
+  .field:focus { @apply border-leaf outline-none ring-2 ring-leaf/20; }
+}
+
+/* recharts tooltip reset */
+.recharts-tooltip-wrapper { outline: none; }
+.recharts-surface:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
